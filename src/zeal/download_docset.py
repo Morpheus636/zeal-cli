@@ -7,6 +7,8 @@ import zipfile
 import bs4
 import requests
 
+from . import filesystem
+
 
 logger = logging.getLogger(__name__)
 
@@ -38,11 +40,10 @@ def _download_and_extract(url: str, extract_to: str) -> None:
                 tar_ref.extractall(extract_to)
 
 
-def get_feeds(data_dir: str) -> str:
+def get_feeds(data_dir: str = filesystem.cli_data_dir) -> str:
     """Downloads Dash's feeds repository to extract the mirror URLs from.
 
-    :param data_dir: a string path to the zeal_cli data directory
-    (see zeal.filesystem.data_dir())
+    :param data_dir: a string path to the zeal_cli data directory. Default: filesystem.cli_data_dir
     :return: a string path to the feeds directory.
     """
     url = "https://github.com/Kapeli/feeds/archive/refs/heads/master.zip"
@@ -52,12 +53,14 @@ def get_feeds(data_dir: str) -> str:
     return output_location
 
 
-def download_docset(docset_name: str, docset_dir: str, feeds_dir: str) -> None:
+def download_docset(
+    docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docset_dir
+) -> None:
     """Download a docset by its feed name.
 
-    :param docset_name: String, the feed name of the docset to download
-    :param docset_dir: String, the directory Zeal reads docsets from - can be found in filesystem.docset_dir
-    :param feeds_dir: String, the di
+    :param docset_name: String, the feed name of the docset to downloadf
+    :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
+    :param docset_dir: String, the directory Zeal reads docsets from. Default: filesystem.docset_dir
     :return: None
     """
     # Get a list of docset .xml files
