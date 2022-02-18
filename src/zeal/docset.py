@@ -2,7 +2,21 @@ import os
 
 import bs4
 
-from . import downloads, filesystem
+from . import downloads, exceptions, filesystem
+
+
+def list_all(docset_dir: str = filesystem.docset_dir) -> list:
+    """List the docsets in the docset_dir.
+
+    :param docset_dir: String, path to the Zeal docset directory. DefaultL filesystem.docset_dir
+    :return: List of docsets (by name, not by path)
+    """
+    files_list = os.listdir(docset_dir)
+    installed_docsets = []
+    for file in files_list:
+        if file.endswith(".docset"):
+            installed_docsets.append(file.rstrip(".docset"))
+    return installed_docsets
 
 
 def download(docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docset_dir) -> None:
@@ -13,6 +27,11 @@ def download(docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docs
     :param docset_dir: String, the directory Zeal reads docsets from. Default: filesystem.docset_dir
     :return: None
     """
+    # Raise an exception if the docset is already installed
+    if docset_name in list_all(docset_dir=docset_dir):
+        raise exceptions.DocsetAlreadyInstalledError(
+            f"The docset '{docset_name}' is already installed."
+        )
     # Get a list of docset .xml files
     available_docsets = set()
     for file in os.listdir(feeds_dir):
@@ -33,17 +52,3 @@ def download(docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docs
         url = urls[0].getText()
         print(url)
     downloads.download_and_extract(url, docset_dir)
-
-
-def list_all(docset_dir: str = filesystem.docset_dir) -> list:
-    """List the docsets in the docset_dir.
-
-    :param docset_dir: String, path to the Zeal docset directory. DefaultL filesystem.docset_dir
-    :return: List of docsets (by name, not by path)
-    """
-    files_list = os.listdir(docset_dir)
-    installed_docsets = []
-    for file in files_list:
-        if file.endswith(".docset"):
-            installed_docsets.append(file.rstrip(".docset"))
-    return installed_docsets
