@@ -1,4 +1,5 @@
 import os
+import shutil
 
 import bs4
 
@@ -64,4 +65,4 @@ def remove(docset_name: str, docset_dir: str = filesystem.docset_dir):
         raise exceptions.DocsetNotInstalledError(
             f"The docset to remove '{docset_name}' cannot be removed because it is not installed on your system."
         )
-    os.rmdir(os.path.join(docset_dir, f"{docset_name}.docset"))
+    shutil.rmtree(os.path.join(docset_dir, f"{docset_name}.docset"))
