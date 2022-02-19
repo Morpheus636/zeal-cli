@@ -9,14 +9,14 @@ logger = logging.getLogger(__file__)
 def get_docset_dir():
     # Set zeal_docset_dir variable.
     if platform.system() == "Linux":
-        return os.path.join(".local", "share", "Zeal", "Zeal", "docsets")
+        return os.path.join(os.path.expanduser("~"), ".local", "share", "Zeal", "Zeal", "docsets")
     else:
         raise NotImplementedError("Zeal_CLI only supports linux at this time.")
 
 
 def get_cli_data_dir():
     if platform.system() == "Linux":
-        zeal_cli_dir = os.path.join(".local", "share", "zeal_cli")
+        zeal_cli_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "zeal_cli")
     else:
         raise NotImplementedError("Zeal_CLI only supports linux at this time.")
 
