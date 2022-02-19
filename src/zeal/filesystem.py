@@ -33,6 +33,7 @@ def get_cli_data_dir():
             f"The Zeal CLI data directory location ({zeal_cli_dir}) does not exist. Creating."
         )
         os.makedirs(zeal_cli_dir)
+    return zeal_cli_dir
 
 
 cli_data_dir = get_cli_data_dir()
