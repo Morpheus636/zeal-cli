@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os[0]}}
+
+    strategy:
+      matrix:
+        os: [[ubuntu-latest, linux]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v7
+
+      - name: Install Poetry Packages
+        run: poetry install
+
+      - name: Build Pyinstaller
+        run: poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli-${{ matrix.os[1] }}
+
+      - name: Upload Executables
+        uses: softprops/action-gh-release@v0.1.14
+        with:
+          files: |
+            dist/zeal-cli-${{ matrix.os[1] }}
+            dist/zeal-cli-${{ matrix.os[1] }}.exe
