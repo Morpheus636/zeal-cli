@@ -5,7 +5,7 @@ description = ""
 authors = ["Josh Levin (Morpheus636) <josh@joshinshaker.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.9, <3.11"
 requests = "^2.27.1"
 beautifulsoup4 = "^4.10.0"
 lxml = "^4.8.0"
