@@ -14,7 +14,7 @@ def list_all(docset_dir: str = filesystem.docset_dir) -> list:
     files_list = os.listdir(docset_dir)
     installed_docsets = []
     for file in files_list:
-        if file.endswith(".docset"):
+        if os.path.isdir(os.path.join(docset_dir, file)) and file.endswith(".docset"):
             installed_docsets.append(file.removesuffix(".docset"))
     return installed_docsets
 
@@ -50,5 +50,18 @@ def download(docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docs
         soup = bs4.BeautifulSoup(file_contents, "lxml")
         urls = soup.find_all("url")
         url = urls[0].getText()
-        print(url)
     downloads.download_and_extract(url, docset_dir)
+
+
+def remove(docset_name: str, docset_dir: str = filesystem.docset_dir):
+    """
+
+    :param docset_name: String, the name of the docset to remove
+    :param docset_dir: Optional: String, the path to the docset directory. Default: filesystem.docset_dir
+    :return:
+    """
+    if docset_name not in list_all(docset_dir=docset_dir):
+        raise exceptions.DocsetNotInstalledError(
+            f"The docset to remove '{docset_name}' cannot be removed because it is not installed on your system."
+        )
+    os.rmdir(os.path.join(docset_dir, f"{docset_name}.docset"))
