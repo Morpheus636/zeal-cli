@@ -15,14 +15,14 @@ def list_all(docset_dir: str = filesystem.docset_dir) -> list:
     installed_docsets = []
     for file in files_list:
         if file.endswith(".docset"):
-            installed_docsets.append(file.rstrip(".docset"))
+            installed_docsets.append(file.removesuffix(".docset"))
     return installed_docsets
 
 
 def download(docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docset_dir) -> None:
     """Download a docset by its feed name.
 
-    :param docset_name: String, the feed name of the docset to downloadf
+    :param docset_name: String, the feed name of the docset to download
     :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
     :param docset_dir: String, the directory Zeal reads docsets from. Default: filesystem.docset_dir
     :return: None
