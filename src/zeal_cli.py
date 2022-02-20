@@ -8,12 +8,12 @@ def main():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="action")
 
-    install_command = subparsers.add_parser("install")
+    install_command = subparsers.add_parser("install", help="Install one or more docsets")
     install_command.add_argument("docsets", nargs="*")
 
-    subparsers.add_parser("list")
+    subparsers.add_parser("list", help="Prints a list of installed docsets")
 
-    remove_command = subparsers.add_parser("remove")
+    remove_command = subparsers.add_parser("remove", help="Delete one or more docsets")
     remove_command.add_argument("docsets", nargs="*")
 
     args = parser.parse_args()
