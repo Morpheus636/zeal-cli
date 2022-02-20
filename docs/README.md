@@ -1,7 +1,8 @@
-# Zeal_CLI
-A Command-Line-Interface for managing installed Zeal Docsets.
+# Zeal CLI
+Zeal CLI is a command-line-interface for managing [Zeal](https://zealdocs.org/) docsets on Linux. It's syntax is roughly based on the basic syntax of the `apt` package manager, because Zeal CLI is basically a package manager for docsets.
 
-Just like Zeal, Zeal_CLI sources docsets from Dash.
+Just like Zeal, Zeal_CLI sources docsets from [Dash](https://kapeli.com/dash). Special thanks to Dash's developer, [Kapeli](https://github.com/Kapeli) for granting me permission to use their docsets.
+
 ## Usage for Non-Contributors
 View the [usage documentation](usage.md) for using instructions.
 
