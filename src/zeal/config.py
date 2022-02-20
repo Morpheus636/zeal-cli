@@ -40,13 +40,14 @@ def get_cli_data_dir() -> str:
 
 def set_default_config(config_path: str) -> dict:
     config_dict = {"docset_dir": get_docset_dir()}
+    if os.path.isfile(config_path):
+        os.remove(config_path)
     with open(config_path, "x") as file:
         yaml.safe_dump(config_dict, stream=file)
     return config_dict
 
 
-def get_config(data_dir: str) -> dict:
-    config_path = os.path.join(data_dir, "config.yml")
+def get_config(config_path: str) -> dict:
     if os.path.isfile(config_path):
         logger.debug(f"Using config file found at {config_path}.")
         with open(config_path, "r") as file:
@@ -58,5 +59,6 @@ def get_config(data_dir: str) -> dict:
 
 
 cli_data_dir = get_cli_data_dir()
-config = get_config(cli_data_dir)
-docset_dir = config["docset_dir"]
+cli_config_path = os.path.join(cli_data_dir, "config.yml")
+cli_config = get_config(cli_config_path)
+docset_dir = cli_config["docset_dir"]
