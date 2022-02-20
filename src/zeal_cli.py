@@ -8,13 +8,21 @@ def main():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="action")
 
-    install_command = subparsers.add_parser("install")
-    install_command.add_argument("docsets", nargs="*")
+    install_command = subparsers.add_parser(
+        "install", help="Install one or more docsets. See `zeal-cli install --help`"
+    )
+    install_command.add_argument(
+        "docsets", nargs="*", help="A list of docset names, separated by a space."
+    )
 
-    subparsers.add_parser("list")
+    subparsers.add_parser("list", help="Prints a list of installed docsets")
 
-    remove_command = subparsers.add_parser("remove")
-    remove_command.add_argument("docsets", nargs="*")
+    remove_command = subparsers.add_parser(
+        "remove", help="Delete one or more docsets. See `zeal-cli remove --help`"
+    )
+    remove_command.add_argument(
+        "docsets", nargs="*", help="A list of docset names, separated by a space."
+    )
 
     args = parser.parse_args()
 
