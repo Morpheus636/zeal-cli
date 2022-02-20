@@ -9,6 +9,7 @@ python = "^3.9, <3.11"
 requests = "^2.27.1"
 beautifulsoup4 = "^4.10.0"
 lxml = "^4.8.0"
+PyYAML = "^6.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.7b0"
