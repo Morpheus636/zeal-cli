@@ -55,7 +55,17 @@ def get_config(config_path: str) -> dict:
     else:
         logger.warning(f"Did not find a config file at {config_path}. Creating default.")
         config_dict = set_default_config(config_path)
+    if not config_dict:
+        logger.warning(f"Config file found at {config_path} is empty. Resetting to defaults.")
+        config_dict = set_default_config(config_path)
     return config_dict
+
+
+def set_config_value(key, value, config_path):
+    with open(config_path, "r+") as config_file:
+        config_dict = yaml.safe_load(config_file)
+        config_dict[key] = value
+        yaml.safe_dump(config_dict, stream=config_file)
 
 
 cli_data_dir = get_cli_data_dir()
