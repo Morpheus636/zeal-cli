@@ -6,7 +6,7 @@ import zipfile
 
 import requests
 
-from . import filesystem
+from . import config
 
 
 logger = logging.getLogger(__name__)
@@ -39,7 +39,7 @@ def download_and_extract(url: str, extract_to: str) -> None:
                 tar_ref.extractall(extract_to)
 
 
-def get_feeds(data_dir: str = filesystem.cli_data_dir) -> str:
+def get_feeds(data_dir: str = config.cli_data_dir) -> str:
     """Downloads Dash's feeds repository to extract the mirror URLs from.
 
     :param data_dir: a string path to the zeal_cli data directory. Default: filesystem.cli_data_dir

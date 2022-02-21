@@ -3,10 +3,10 @@ import shutil
 
 import bs4
 
-from . import downloads, exceptions, filesystem
+from . import config, downloads, exceptions
 
 
-def list_all(docset_dir: str = filesystem.docset_dir) -> list:
+def list_all(docset_dir: str = config.docset_dir) -> list:
     """List the docsets in the docset_dir.
 
     :param docset_dir: String, path to the Zeal docset directory. DefaultL filesystem.docset_dir
@@ -20,7 +20,7 @@ def list_all(docset_dir: str = filesystem.docset_dir) -> list:
     return installed_docsets
 
 
-def download(docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docset_dir) -> None:
+def download(docset_name: str, feeds_dir: str, docset_dir: str = config.docset_dir) -> None:
     """Download a docset by its feed name.
 
     :param docset_name: String, the feed name of the docset to download
@@ -54,7 +54,7 @@ def download(docset_name: str, feeds_dir: str, docset_dir: str = filesystem.docs
     downloads.download_and_extract(url, docset_dir)
 
 
-def remove(docset_name: str, docset_dir: str = filesystem.docset_dir):
+def remove(docset_name: str, docset_dir: str = config.docset_dir):
     """
 
     :param docset_name: String, the name of the docset to remove
