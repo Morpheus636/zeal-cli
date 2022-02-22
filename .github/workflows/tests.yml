@@ -24,5 +24,8 @@ jobs:
       - name: Install Packages
         run: poetry install
 
-      - name: Test
+      - name: Run PyTest
         run: poetry run pytest
+
+      - name: Build Test
+        run: make build
