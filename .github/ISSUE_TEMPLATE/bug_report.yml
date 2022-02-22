@@ -29,7 +29,6 @@ body:
   id: build
   attributes:
     label: Build
-    description: How did you install zeal-cli?
     options:
       - Downloaded from Release
       - make build
