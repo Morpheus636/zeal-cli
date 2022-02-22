@@ -18,7 +18,7 @@ body:
     placeholder: Describe the correct behaviour.
   validations:
     required: true
-- type: textarea
+- type: input
   id: version
   attributes:
     label: Version
@@ -26,28 +26,28 @@ body:
   validations:
     required: true
 - type: dropdown
-  id: build
+id: build
+attributes:
+  label: Build
+  options:
+    - Downloaded from Release
+    - make build
+    - make <linux/windows>-install
+    - Other (please explain in the What Happened? section)
+validations:
+  required: true
+- type: input
+  id: os
   attributes:
-    label: Build
-    options:
-      - Downloaded from Release
-      - make build
-      - make <linux/windows>-install
-      - Other (please explain in the What Happened? section)
+    label: OS
+    description: What OS (and version) are you running?
   validations:
     required: true
-  - type: textarea
-    id: os
-    attributes:
-      label: OS
-      description: What OS (and version) are you running?
-    validations:
-      required: true
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+- type: checkboxes
+  id: terms
+  attributes:
+    label: Code of Conduct
+    description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+    options:
+      - label: I agree to follow this project's Code of Conduct
+        required: true
