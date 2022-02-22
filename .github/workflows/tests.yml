@@ -8,7 +8,12 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os}}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -24,5 +29,8 @@ jobs:
       - name: Install Packages
         run: poetry install
 
-      - name: Test
+      - name: Run PyTest
         run: poetry run pytest
+
+      - name: Build Test
+        run: make build
