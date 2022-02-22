@@ -8,7 +8,6 @@ body:
   attributes:
     label: What happened?
     placeholder: Describe the unintended behaviour.
-    value: ""
   validations:
     required: true
 - type: textarea
