@@ -3,13 +3,16 @@ Right now, Zeal_CLI only supports Linux.
 
 # Installation
 
-## Linux - Executable
+## Linux - Pre Built
 1. Download the linux build from the most recent [release](https://github.com/Morpheus636/zeal_cli/releases)
-2. Create a directory `~/zeal-cli/`
-3. Copy the linux build to that directory.
-4. Give the file executable permissions (`chmod +x ~/zeal-cli/zeal-cli`)
-5. Symlink it to a location on PATH (I personally use `~/.local/bin/`)
+3. Copy the linux build to `~/.local/bin` (or another location on PATH)
+4. Give the file executable permissions (`chmod +x ~/.local/bin/zeal-cli`)
 6. Run it with `zeal-cli`
+
+## Linux - From Source
+1. Clone this repo using Git - `git clone https://github.com/Morpheus636/zeal-cli.git`
+2. Checkout the repo at the most recent version tag (or branch) - `git checkout tags/<tag_name>` or `git checkout origin/<branch_name>`
+3. Run `make linux-install`
 
 ## Usage
 Usage information can be found by running `zeal-cli --help`
