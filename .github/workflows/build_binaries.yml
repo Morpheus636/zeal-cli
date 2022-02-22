@@ -29,7 +29,7 @@ jobs:
         run: poetry install
 
       - name: Build Pyinstaller
-        run: poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli
+        run: make build
 
       - name: Upload Executables
         uses: softprops/action-gh-release@v0.1.14
