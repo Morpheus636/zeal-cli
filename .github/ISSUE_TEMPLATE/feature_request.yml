@@ -8,7 +8,7 @@ body:
   attributes:
     label: Feature Request
     placeholder: Describe the feature you would like added.
-    value: ""
+    value: "Feature Request"
   validations:
     required: true
 - type: checkboxes
