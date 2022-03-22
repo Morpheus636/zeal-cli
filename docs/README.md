@@ -1,9 +1,18 @@
 # Zeal CLI
 Zeal CLI is a command-line-interface for managing [Zeal](https://zealdocs.org/) docsets on Linux. It's syntax is roughly based on the basic syntax of the `apt` package manager, because Zeal CLI is basically a package manager for docsets.
 
-Just like Zeal, Zeal_CLI sources docsets from [Dash](https://kapeli.com/dash). Special thanks to Dash's developer, [Kapeli](https://github.com/Kapeli) for granting me permission to use their docsets.
+## Features
+- Simple, familiar command-line interface
+- Gets docsets from the same source as Zeal
+- Easy to install and use - no additional dependencies required.
+- Docsets can still be managed within the Zeal GUI
+- Free and Open-Source
 
-## Usage for Non-Contributors
+## Built Using:
+- Python 3
+- PyInstaller
+
+## Installing and Using Zeal-CLI
 View the [usage documentation](usage.md) for using instructions.
 
 ## Contact
@@ -15,3 +24,16 @@ To ask a question or get support, you can join my [Discord Server](https://disco
 ## Documentation
 To view all the available documentation for this project, please see the [Documents Index](INDEX.md)
 This includes information on getting started, the development environment, and more.
+
+## Contributing
+If you'd like to work on developing Zeal-CLI, you can start by doing the following:
+1. Fork this repository
+2. `git clone` your fork to your development machine
+3. Set up your [Development Environment](development.md)
+4. Pick up a ticket labeled `help wanted` as outlined in the [tickets](tickets.md) documentation
+5. Work on implementing the feature or bugfix in your fork
+6. Open a Pull Request back into this repository's `main` branch.
+
+
+## Credits
+Zeal_CLI sources docsets from [Dash](https://kapeli.com/dash), just like Zeal. Special thanks to Dash's developer, [Kapeli](https://github.com/Kapeli) for granting me permission to use their docsets.
