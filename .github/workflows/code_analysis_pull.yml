@@ -32,7 +32,7 @@ jobs:
         run: poetry run isort
   
       - name: Black (Code Formatter)
-        run: poetry run black
+        run: find . -type f -name "*.py" | xargs poetry run black
 
       - name: Check for changes
         id: changes
