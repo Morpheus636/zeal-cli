@@ -2,7 +2,7 @@
 name = "zeal_cli"
 version = "0.1.0a1"
 description = ""
-authors = ["Josh Levin (Morpheus636) <josh@joshinshaker.com>"]
+authors = ["Josh Levin <morpheus636@morpheus636.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
