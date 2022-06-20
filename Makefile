@@ -1,5 +1,5 @@
 build:
-	poetry run python build_system/update_version.py
+	poetry run python ./build_system/update_version.py
 	poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli
 
 linux-install:
