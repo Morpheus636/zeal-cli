@@ -18,6 +18,7 @@ isort = "^5.9.3"
 pytest = "^6.2.4"
 pre-commit = "^2.13.0"
 pyinstaller = "^4.9"
+GitPython = "^3.1.27"
 
 [tool.black]
 line-length = 100
