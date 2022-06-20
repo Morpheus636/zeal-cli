@@ -1,1 +1,1 @@
-from . import config, docset, downloads, exceptions
+from . import config, docset, downloads, exceptions, version

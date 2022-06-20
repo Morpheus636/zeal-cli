@@ -1,5 +1,6 @@
 import argparse
 import shutil
+import sys
 
 import zeal
 
@@ -50,8 +51,15 @@ def main():
         "value", help="The value to assign to the specified config item."
     )
 
+    parser.add_argument(
+        "-v", "--version", action="store_true", help="Print Zeal-CLI's version information"
+    )
+
     args = parser.parse_args()
 
+    if args.version:
+        print(f"Build Version: {zeal.version.build_version}")
+        sys.exit()
     if args.action == "install":
         if args.docsets:
             print("Getting list of available docsets")
