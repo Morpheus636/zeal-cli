@@ -8,7 +8,7 @@ authors = ["Josh Levin <morpheus636@morpheus636.com>"]
 python = ">=3.10,<3.11"
 requests = "^2.27.1"
 beautifulsoup4 = "^4.10.0"
-lxml = "^4.8.0"
+lxml = "^4.9.1"
 PyYAML = "^6.0"
 
 [tool.poetry.dev-dependencies]
