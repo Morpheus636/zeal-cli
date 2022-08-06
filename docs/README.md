@@ -18,8 +18,7 @@ View the [usage documentation](usage.md) for using instructions.
 ## Contact
 To submit a Bug Report or Feature Request, please open a [GitHub Issue](https://github.com/Morpheus636/zeal-cli/issues/new).
 
-To ask a question or get support, you can join my [Discord Server](https://discord.morpheus636.com) or ask in the Zeal-CLI section of my 
-[Forums](https://forums.morpheus636.com)
+To ask a question or get support, you can join my [Discord Server](https://discord.morpheus636.com) or create a Discussions thread within this repository.
 
 ## Contributing
 To contribute to this project, view the Contribution Docs found in [CONTRIBUTING.md](CONTRIBUTING.md)
