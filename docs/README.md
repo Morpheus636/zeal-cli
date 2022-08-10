@@ -8,11 +8,11 @@ Zeal CLI is a command-line-interface for managing [Zeal](https://zealdocs.org/) 
 - Docsets can still be managed within the Zeal GUI
 - Free and Open-Source
 
-## Built Using:
+## Technologies
 - Python 3
 - PyInstaller
 
-## Installing and Using Zeal-CLI
+## Usage
 View the [usage documentation](usage.md) for using instructions.
 
 ## Contact
@@ -21,10 +21,10 @@ To submit a Bug Report or Feature Request, please open a [GitHub Issue](https://
 To ask a question or get support, you can join my [Discord Server](https://discord.morpheus636.com) or create a Discussions thread within this repository.
 
 ## Contributing
-To contribute to this project, view the Contribution Docs found in [CONTRIBUTING.md](CONTRIBUTING.md)
+This project is maintained my Morpheus636. Contribution guidelines for all of my projects can be found at https://docs.morpheus636.com/contributing
 
 ## Credits
-Zeal_CLI sources docsets from [Dash](https://kapeli.com/dash), just like Zeal. Special thanks to Dash's developer, [Kapeli](https://github.com/Kapeli) for granting me permission to use their docsets.
+- Zeal_CLI sources docsets from [Dash](https://kapeli.com/dash), just like Zeal. Special thanks to Dash's developer, [Kapeli](https://github.com/Kapeli) for granting me permission to use their docsets.
 
 # Copyright Notice
 © Copyright 2021-2022 Josh Levin ([Morpheus636](https://github.com/morpheus636))
