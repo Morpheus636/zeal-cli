@@ -30,22 +30,8 @@ def download(docset_name: str, docset_version: str, feeds_dir: str, docset_dir: 
     :param docset_dir: String, the directory Zeal reads docsets from. Default: filesystem.docset_dir
     :return: None
     """
-    # Raise an exception if the docset is already installed
-    if docset_name in list_all(docset_dir=docset_dir):
-        raise exceptions.DocsetAlreadyInstalledError(
-            f"The docset '{docset_name}' is already installed."
-        )
-    # Get a list of docset .xml files
-    available_docsets = set()
-    for file in os.listdir(feeds_dir):
-        if file.endswith(".xml"):
-            available_docsets.add(file)
-
-    # Find the correct docset .xml file
-    for file in available_docsets:
-        if file.startswith(docset_name):
-            docset_xml_path = os.path.join(feeds_dir, file)
-            break
+    # Get docset xml file
+    docset_xml_path = _get_docset_xml(docset_name, feeds_dir)
 
     # Extract the URL and download it to the docset dir
     with open(docset_xml_path, "r") as file:
@@ -80,3 +66,49 @@ def remove(docset_name: str, docset_dir: str = config.docset_dir):
             f"The docset to remove '{docset_name}' cannot be removed because it is not installed on your system."
         )
     shutil.rmtree(os.path.join(docset_dir, f"{docset_name}.docset"))
+
+
+def get_docset_versions(docset_name: str, feeds_dir: str):
+    """Returns a list of available versions of a particular docset.
+
+    :param docset_name: String, the name of the docset to remove
+    :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
+    :return: List of version as string
+    """
+    docset_xml_path = _get_docset_xml(docset_name, feeds_dir)
+
+    # Extract the URL and download it to the docset dir
+    with open(docset_xml_path, "r") as file:
+        file_contents = file.read()
+        soup = bs4.BeautifulSoup(file_contents, "lxml")
+        # Verify if version is available in feed
+        if soup.find("other-versions"):
+            soup_docset_versions = soup.findAll('version')
+            return [docset_version.get_text() for docset_version in soup_docset_versions]
+
+
+def _get_docset_xml(docset_name: str, feeds_dir: str):
+    """Returns the correct docset xml file
+
+    :param docset_name: String, the name of the docset to remove
+    :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
+    :return: the docset xml file path
+    """
+    # Get a list of docset .xml files
+    available_docsets = set()
+    for file in os.listdir(feeds_dir):
+        if file.endswith(".xml"):
+            available_docsets.add(file)
+
+    # Find the correct docset .xml file
+    docset_xml_path = None
+    for file in available_docsets:
+        if file.startswith(docset_name):
+            docset_xml_path = os.path.join(feeds_dir, file)
+            break
+    if docset_xml_path is None:
+        raise exceptions.DocsetNotExistsError(
+            f"The docset '{docset_name}' cannot be found in the feeds to download."
+        )
+    
+    return docset_xml_path

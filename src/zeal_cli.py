@@ -20,7 +20,17 @@ def main():
         )
     )
 
-    subparsers.add_parser("list", help="Prints a list of installed docsets")
+    list_command = subparsers.add_parser("list", help="Prints a list of installed docsets")
+    list_command_subparser = list_command.add_subparsers(dest="list_action")
+    list_docset_versions = list_command_subparser.add_parser(
+        "versions", help="List available versions of a particular docset"
+    )
+    list_docset_versions.add_argument(
+        "docset", nargs=1, help="A name of a docset."
+    )
+    list_command_subparser.add_parser(
+        "docsets", help="Prints a list of installed docsets"
+    )
 
     remove_command = subparsers.add_parser(
         "remove", help="Delete one or more docsets. See `zeal-cli remove --help`"
@@ -86,7 +96,15 @@ def main():
             install_command.print_help()
 
     elif args.action == "list":
-        print(*zeal.docset.list_all(), sep="\n")
+        if args.list_action == "versions":
+            feeds = zeal.downloads.get_feeds()
+            docset_name = args.docset[0]
+            docset_versions = zeal.docset.get_docset_versions(docset_name, feeds)
+            print("Available versions for docset {}: {}".format(docset_name, ", ".join(docset_versions)))
+        elif args.list_action == "docsets":
+            print(*zeal.docset.list_all(), sep="\n")
+        else:
+            print(*zeal.docset.list_all(), sep="\n")
 
     elif args.action == "remove":
         if args.docsets:
