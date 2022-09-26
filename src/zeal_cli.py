@@ -13,7 +13,11 @@ def main():
         "install", help="Install one or more docsets. See `zeal-cli install --help`"
     )
     install_command.add_argument(
-        "docsets", nargs="*", help="A list of docset names, separated by a space."
+        "docsets", nargs="*", help=(
+            "A list of docset names, separated by a space. "
+            "A specific version of a docset can be selected for installation by following "
+            "the docset name with an equals (=) and the version of the docset to select"
+        )
     )
 
     subparsers.add_parser("list", help="Prints a list of installed docsets")
@@ -65,8 +69,15 @@ def main():
             print("Getting list of available docsets")
             feeds = zeal.downloads.get_feeds()
             for docset in args.docsets:
+                docset_name = docset
+                docset_version = None
+                # Parse version string if defined
+                if '=' in docset:
+                    docset_info = docset.split('=', 1)
+                    docset_name = docset_info[0]
+                    docset_version = docset_info[1]
                 print(f"Installing docset: {docset}")
-                zeal.docset.download(docset, feeds)
+                zeal.docset.download(docset_name, docset_version, feeds)
                 print(f"Successfully installed docset: {docset}")
             print("Cleaning up")
             shutil.rmtree(feeds)

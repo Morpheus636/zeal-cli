@@ -1,5 +1,6 @@
 import os
 import shutil
+import urllib
 
 import bs4
 
@@ -20,10 +21,11 @@ def list_all(docset_dir: str = config.docset_dir) -> list:
     return installed_docsets
 
 
-def download(docset_name: str, feeds_dir: str, docset_dir: str = config.docset_dir) -> None:
+def download(docset_name: str, docset_version: str, feeds_dir: str, docset_dir: str = config.docset_dir) -> None:
     """Download a docset by its feed name.
 
     :param docset_name: String, the feed name of the docset to download
+    :param docset_version: String, the docset version to download
     :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
     :param docset_dir: String, the directory Zeal reads docsets from. Default: filesystem.docset_dir
     :return: None
@@ -51,6 +53,18 @@ def download(docset_name: str, feeds_dir: str, docset_dir: str = config.docset_d
         soup = bs4.BeautifulSoup(file_contents, "lxml")
         urls = soup.find_all("url")
         url = urls[0].getText()
+        # Adjust URL if version is specified
+        if docset_version is not None:
+            # Verify if version is available in feed
+            if soup.find("other-versions") and soup.findAll(text=docset_version):
+                parsed_uri = urllib.parse.urlparse(url)
+                file_name = os.path.basename(parsed_uri.path)
+                url = f"{parsed_uri.scheme}://{parsed_uri.netloc}/feeds/zzz/versions/{docset_name}/{docset_version}/{file_name}"
+            else:
+                raise exceptions.DocsetNotExistsError(
+                    f"Version {docset_version} does not exist for {docset_name}"
+                )
+
     downloads.download_and_extract(url, docset_dir)
 
 
