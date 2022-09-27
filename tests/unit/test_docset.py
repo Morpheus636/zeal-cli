@@ -31,11 +31,24 @@ def test_download_docset():
         os.mkdir(docset_dir)
         feeds_path = src.zeal.downloads.get_feeds(feeds_dir)
         # Test that the docset is downloaded to the right place
-        src.zeal.docset.download("Django", feeds_path, docset_dir=docset_dir)
+        src.zeal.docset.download("Django", None, feeds_path, docset_dir=docset_dir)
         assert os.path.isdir(os.path.join(docset_dir, "Django.docset"))
         with pytest.raises(src.zeal.exceptions.DocsetAlreadyInstalledError):
-            src.zeal.docset.download("Django", feeds_path, docset_dir=docset_dir)
+            src.zeal.docset.download("Django", None, feeds_path, docset_dir=docset_dir)
 
+def test_download_docset_by_version():
+    with tempfile.TemporaryDirectory() as data_dir:
+        # Setup the tempdir
+        feeds_dir = os.path.join(data_dir, "feeds")
+        os.mkdir(feeds_dir)
+        docset_dir = os.path.join(data_dir, "docsets")
+        os.mkdir(docset_dir)
+        feeds_path = src.zeal.downloads.get_feeds(feeds_dir)
+        # Test that the docset is downloaded to the right place
+        src.zeal.docset.download("Django", "2.2.7", feeds_path, docset_dir=docset_dir)
+        assert os.path.isdir(os.path.join(docset_dir, "Django.docset"))
+        with pytest.raises(src.zeal.exceptions.DocsetAlreadyInstalledError):
+            src.zeal.docset.download("Django", "2.2.7", feeds_path, docset_dir=docset_dir)
 
 def test_delete_docset():
     with tempfile.TemporaryDirectory() as data_dir:
@@ -56,3 +69,15 @@ def test_delete_docset():
         os.mkdir(os.path.join(docset_dir, "TotallyRealDocset.docset"))
         src.zeal.docset.remove("TotallyRealDocset", docset_dir=docset_dir)
         assert not os.path.isdir(os.path.join(docset_dir, "TotallyRealDocset.docset"))
+
+
+def test_list_docset_version():
+    with tempfile.TemporaryDirectory() as data_dir:
+        # Setup the tempdir
+        feeds_dir = os.path.join(data_dir, "feeds")
+        os.mkdir(feeds_dir)
+        feeds_path = src.zeal.downloads.get_feeds(feeds_dir)
+        # Test that for a docset a list of version strings is returned
+        docset_versions = src.zeal.docset.get_docset_versions("Django", feeds_path)
+        assert isinstance(docset_versions, list)
+        assert all(isinstance(version, str) for version in docset_versions)

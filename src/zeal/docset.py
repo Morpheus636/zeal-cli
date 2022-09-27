@@ -30,6 +30,12 @@ def download(docset_name: str, docset_version: str, feeds_dir: str, docset_dir: 
     :param docset_dir: String, the directory Zeal reads docsets from. Default: filesystem.docset_dir
     :return: None
     """
+    # Raise an exception if the docset is already installed
+    if docset_name in list_all(docset_dir=docset_dir):
+        raise exceptions.DocsetAlreadyInstalledError(
+            f"The docset '{docset_name}' is already installed."
+        )
+
     # Get docset xml file
     docset_xml_path = _get_docset_xml(docset_name, feeds_dir)
 
@@ -42,7 +48,7 @@ def download(docset_name: str, docset_version: str, feeds_dir: str, docset_dir: 
         # Adjust URL if version is specified
         if docset_version is not None:
             # Verify if version is available in feed
-            if soup.find("other-versions") and soup.findAll(text=docset_version):
+            if soup.find("other-versions") and soup.findAll(string=docset_version):
                 parsed_uri = urllib.parse.urlparse(url)
                 file_name = os.path.basename(parsed_uri.path)
                 url = f"{parsed_uri.scheme}://{parsed_uri.netloc}/feeds/zzz/versions/{docset_name}/{docset_version}/{file_name}"
