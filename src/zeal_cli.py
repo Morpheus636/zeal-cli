@@ -20,16 +20,11 @@ def main():
         )
     )
 
-    list_command = subparsers.add_parser("list", help="Prints a list of installed docsets")
-    list_command_subparser = list_command.add_subparsers(dest="list_action")
-    list_docset_versions = list_command_subparser.add_parser(
-        "versions", help="List available versions of a particular docset"
-    )
-    list_docset_versions.add_argument(
+    subparsers.add_parser("list", help="Prints a list of installed docsets")
+
+    search_command = subparsers.add_parser("search", help="Prints a list of installed docsets")
+    search_command.add_argument(
         "docset", nargs=1, help="A name of a docset."
-    )
-    list_command_subparser.add_parser(
-        "docsets", help="Prints a list of installed docsets"
     )
 
     remove_command = subparsers.add_parser(
@@ -80,14 +75,14 @@ def main():
             feeds = zeal.downloads.get_feeds()
             for docset in args.docsets:
                 docset_name = docset
-                docset_version = None
+                docset_version = zeal.docset.LATEST_VERSION
                 # Parse version string if defined
                 if '=' in docset:
                     docset_info = docset.split('=', 1)
                     docset_name = docset_info[0]
                     docset_version = docset_info[1]
                 print(f"Installing docset: {docset}")
-                zeal.docset.download(docset_name, docset_version, feeds)
+                zeal.docset.download(docset_name, feeds, docset_version=docset_version)
                 print(f"Successfully installed docset: {docset}")
             print("Cleaning up")
             shutil.rmtree(feeds)
@@ -96,15 +91,13 @@ def main():
             install_command.print_help()
 
     elif args.action == "list":
-        if args.list_action == "versions":
-            feeds = zeal.downloads.get_feeds()
-            docset_name = args.docset[0]
-            docset_versions = zeal.docset.get_docset_versions(docset_name, feeds)
-            print("Available versions for docset {}: {}".format(docset_name, ", ".join(docset_versions)))
-        elif args.list_action == "docsets":
             print(*zeal.docset.list_all(), sep="\n")
-        else:
-            print(*zeal.docset.list_all(), sep="\n")
+
+    elif args.action == "search":
+        feeds = zeal.downloads.get_feeds()
+        docset_name = args.docset[0]
+        docset_versions = zeal.docset.get_docset_versions(docset_name, feeds)
+        print(f"Available versions for docset {docset_name}: {', '.join(docset_versions)}")
 
     elif args.action == "remove":
         if args.docsets:
