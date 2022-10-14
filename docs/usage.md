@@ -12,7 +12,8 @@ Right now, Zeal_CLI only supports Linux.
 ## Linux - From Source
 1. Clone this repo using Git - `git clone https://github.com/Morpheus636/zeal-cli.git`
 2. Checkout the repo at the most recent version tag (or branch) - `git checkout tags/<tag_name>` or `git checkout origin/<branch_name>`
-3. Run `make linux-install`
+3. Run `make clean` (May not be nessesary if its your first time building zeal-cli, but won't hurt)
+4. Run `make linux-install`
 
 ## Usage
 Usage information can be found by running `zeal-cli --help`
