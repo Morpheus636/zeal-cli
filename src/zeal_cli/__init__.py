@@ -2,7 +2,7 @@ import argparse
 import shutil
 import sys
 
-import zeal
+from zeal_cli import zeal
 
 
 def main():

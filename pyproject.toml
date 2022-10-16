@@ -4,6 +4,9 @@ version = "0.1.0a1"
 description = ""
 authors = ["Josh Levin <morpheus636@morpheus636.com>"]
 
+[tool.poetry.scripts]
+zeal-cli = 'zeal_cli:main'
+
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
 requests = "^2.27.1"
