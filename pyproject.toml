@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zeal_cli"
-version = "0.1.0a1"
+version = "v1.2.0"
 description = ""
 authors = ["Josh Levin <morpheus636@morpheus636.com>"]
 
