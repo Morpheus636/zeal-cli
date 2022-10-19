@@ -1,23 +1,24 @@
 [tool.poetry]
 name = "zeal_cli"
-version = "0.1.0a1"
+version = "v1.2.0"
 description = ""
-authors = ["Josh Levin (Morpheus636) <josh@joshinshaker.com>"]
+authors = ["Josh Levin <morpheus636@morpheus636.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9, <3.11"
+python = ">=3.10,<3.11"
 requests = "^2.27.1"
 beautifulsoup4 = "^4.10.0"
-lxml = "^4.8.0"
+lxml = "^4.9.1"
 PyYAML = "^6.0"
 
 [tool.poetry.dev-dependencies]
-black = "^21.7b0"
+black = "^22.3.0"
 flake8 = "^3.9.2"
 isort = "^5.9.3"
 pytest = "^6.2.4"
 pre-commit = "^2.13.0"
 pyinstaller = "^4.9"
+GitPython = "^3.1.27"
 
 [tool.black]
 line-length = 100

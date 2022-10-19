@@ -16,11 +16,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+      - run: git fetch --prune --tags --unshallow
 
       - name: Setup Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.9
+          python-version: "3.10"
 
       - name: Setup Poetry
         uses: Gr1N/setup-poetry@v7
@@ -29,7 +30,7 @@ jobs:
         run: poetry install
 
       - name: Build Pyinstaller
-        run: poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli
+        run: make build
 
       - name: Upload Executables
         uses: softprops/action-gh-release@v0.1.14
