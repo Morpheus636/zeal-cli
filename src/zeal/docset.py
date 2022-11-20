@@ -20,7 +20,7 @@ def list_all(docset_dir: Path = config.docset_dir) -> list:
     installed_docsets = []
     for elem in docset_dir.glob("*.docset"):
         if elem.is_dir():
-            installed_docsets.append(elem.parts[-1].removesuffix(".docset"))
+            installed_docsets.append(elem.stem)
     return installed_docsets
 
 
