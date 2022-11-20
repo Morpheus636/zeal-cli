@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import sys
 import tempfile
 
@@ -15,7 +16,7 @@ def test_list_all():
         os.mkdir(os.path.join(docset_dir, "docset2.docset"))
         os.mkdir(os.path.join(docset_dir, "docset3.docset"))
         os.mkdir(os.path.join(docset_dir, "not_a_docset"))
-        docset_list = src.zeal.docset.list_all(docset_dir=docset_dir)
+        docset_list = src.zeal.docset.list_all(docset_dir=Path(docset_dir))
         assert "docset1" in docset_list
         assert "docset2" in docset_list
         assert "docset3" in docset_list
@@ -31,10 +32,10 @@ def test_download_docset():
         os.mkdir(docset_dir)
         feeds_path = src.zeal.downloads.get_feeds(feeds_dir)
         # Test that the docset is downloaded to the right place
-        src.zeal.docset.download("Django", feeds_path, docset_dir=docset_dir)
+        src.zeal.docset.download("Django", feeds_path, docset_dir=Path(docset_dir))
         assert os.path.isdir(os.path.join(docset_dir, "Django.docset"))
         with pytest.raises(src.zeal.exceptions.DocsetAlreadyInstalledError):
-            src.zeal.docset.download("Django", feeds_path, docset_dir=docset_dir)
+            src.zeal.docset.download("Django", feeds_path, docset_dir=Path(docset_dir))
 
 def test_download_docset_by_version():
     with tempfile.TemporaryDirectory() as data_dir:
@@ -45,10 +46,10 @@ def test_download_docset_by_version():
         os.mkdir(docset_dir)
         feeds_path = src.zeal.downloads.get_feeds(feeds_dir)
         # Test that the docset is downloaded to the right place
-        src.zeal.docset.download("Django", feeds_path, docset_version="2.2.7", docset_dir=docset_dir)
+        src.zeal.docset.download("Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir))
         assert os.path.isdir(os.path.join(docset_dir, "Django.docset"))
         with pytest.raises(src.zeal.exceptions.DocsetAlreadyInstalledError):
-            src.zeal.docset.download("Django", feeds_path, docset_version="2.2.7", docset_dir=docset_dir)
+            src.zeal.docset.download("Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir))
 
 def test_delete_docset():
     with tempfile.TemporaryDirectory() as data_dir:
@@ -57,17 +58,17 @@ def test_delete_docset():
         os.mkdir(docset_dir)
         # Test that the docset not existing raises an exception
         with pytest.raises(src.zeal.exceptions.DocsetNotInstalledError):
-            src.zeal.docset.remove("TotallyRealDocset", docset_dir=docset_dir)
+            src.zeal.docset.remove("TotallyRealDocset", docset_dir=Path(docset_dir))
         # Test that a file with the same name still raises the exception
         with open(os.path.join(docset_dir, "TotallyRealDocset.docset"), "a"):
             pass
         with pytest.raises(src.zeal.exceptions.DocsetNotInstalledError):
-            src.zeal.docset.remove("TotallyRealDocset", docset_dir=docset_dir)
+            src.zeal.docset.remove("TotallyRealDocset", docset_dir=Path(docset_dir))
         os.remove(os.path.join(docset_dir, "TotallyRealDocset.docset"))
 
         # Test that the docset gets removed when it exists.
         os.mkdir(os.path.join(docset_dir, "TotallyRealDocset.docset"))
-        src.zeal.docset.remove("TotallyRealDocset", docset_dir=docset_dir)
+        src.zeal.docset.remove("TotallyRealDocset", docset_dir=Path(docset_dir))
         assert not os.path.isdir(os.path.join(docset_dir, "TotallyRealDocset.docset"))
 
 
