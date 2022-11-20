@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 import tarfile
 import tempfile
 import zipfile
@@ -12,7 +13,7 @@ from . import config
 logger = logging.getLogger(__name__)
 
 
-def download_and_extract(url: str, extract_to: str) -> None:
+def download_and_extract(url: str, extract_to: Path) -> None:
     """Downloads a zip file from a specified URL and extracts it to a specified location on disk.
 
     :param url: The URL to a .zip file to download and extract, in a string.
@@ -33,20 +34,20 @@ def download_and_extract(url: str, extract_to: str) -> None:
         # Extract Phase
         if url.endswith(".zip"):
             with zipfile.ZipFile(file_name, "r") as zip_ref:
-                zip_ref.extractall(extract_to)
+                zip_ref.extractall(str(extract_to.resolve()))
         elif url.endswith(".tgz"):
             with tarfile.open(file_name, "r:gz") as tar_ref:
-                tar_ref.extractall(extract_to)
+                tar_ref.extractall(str(extract_to.resolve()))
 
 
-def get_feeds(data_dir: str = config.cli_data_dir) -> str:
+def get_feeds(data_dir: Path = config.cli_data_dir) -> Path:
     """Downloads Dash's feeds repository to extract the mirror URLs from.
 
     :param data_dir: a string path to the zeal_cli data directory. Default: filesystem.cli_data_dir
     :return: a string path to the feeds directory.
     """
     url = "https://github.com/Kapeli/feeds/archive/refs/heads/master.zip"
-    output_location = os.path.join(data_dir, "feeds")  # Figure out where to put the feeds dir
+    output_location = Path(data_dir, "feeds")  # Figure out where to put the feeds dir
     download_and_extract(url, output_location)
-    output_location = os.path.join(output_location, "feeds-master")
+    output_location = Path(output_location, "feeds-master")
     return output_location

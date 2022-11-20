@@ -85,7 +85,7 @@ def main():
                 zeal.docset.download(docset_name, feeds, docset_version=docset_version)
                 print(f"Successfully installed docset: {docset}")
             print("Cleaning up")
-            shutil.rmtree(feeds)
+            shutil.rmtree(str(feeds.resolve()))
             print("Done")
         else:
             install_command.print_help()

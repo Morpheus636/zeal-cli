@@ -1,56 +1,59 @@
 import logging
 import os
 import platform
+from typing import Any
+import winreg
 
 import yaml
+from pathlib import Path
 
 
 logger = logging.getLogger(__file__)
 
 
-def get_docset_dir() -> str:
+def get_docset_dir() -> Path:
     # Set zeal_docset_dir variable.
     if platform.system() == "Linux":
-        return os.path.join(os.path.expanduser("~"), ".local", "share", "Zeal", "Zeal", "docsets")
+        return Path("~", ".local", "share", "Zeal", "Zeal", "docsets").expanduser()
+    elif platform.system() == "Windows":
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Zeal\\Zeal\\docsets") as key:
+            path, _type = winreg.QueryValueEx(key, 'path')
+            return Path(path).expanduser()
     else:
-        raise NotImplementedError("Zeal_CLI only supports linux at this time.")
+        raise RuntimeError("Systems other than Linux and Windows are not supported")
 
+def get_cli_data_dir() -> Path:
+    zeal_cli_dir = Path("~", ".local", "share", "zeal_cli").expanduser()
 
-def get_cli_data_dir() -> str:
-    if platform.system() == "Linux":
-        zeal_cli_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "zeal_cli")
-    else:
-        raise NotImplementedError("Zeal_CLI only supports linux at this time.")
-
-    if os.path.isfile(zeal_cli_dir):
+    if zeal_cli_dir.is_file():
         logger.warning(
             f"The Zeal CLI data directory location ({zeal_cli_dir}) exists and is a file, not a directory. Deleting."
         )
         os.remove(zeal_cli_dir)
-        os.makedirs(zeal_cli_dir)
-    elif os.path.isdir(zeal_cli_dir):
+        zeal_cli_dir.mkdir()
+    elif zeal_cli_dir.is_dir():
         logger.debug(f"The Zeal CLI data directory location ({zeal_cli_dir}) already exists.")
-    elif not os.path.exists(zeal_cli_dir):
+    elif not zeal_cli_dir.exists():
         logger.debug(
             f"The Zeal CLI data directory location ({zeal_cli_dir}) does not exist. Creating."
         )
-        os.makedirs(zeal_cli_dir)
+        zeal_cli_dir.mkdir()
     return zeal_cli_dir
 
 
-def set_default_config(config_path: str) -> dict:
-    config_dict = {"docset_dir": get_docset_dir()}
-    if os.path.isfile(config_path):
+def set_default_config(config_path: Path) -> dict:
+    config_dict = {"docset_dir": str(get_docset_dir().resolve())}
+    if config_path.is_file():
         os.remove(config_path)
-    with open(config_path, "x") as file:
+    with config_path.open(mode="x") as file:
         yaml.safe_dump(config_dict, stream=file)
     return config_dict
 
 
-def get_config(config_path: str) -> dict:
-    if os.path.isfile(config_path):
+def get_config(config_path: Path) -> dict:
+    if config_path.is_file():
         logger.debug(f"Using config file found at {config_path}.")
-        with open(config_path, "r") as file:
+        with config_path.open() as file:
             config_dict = yaml.safe_load(file)
     else:
         logger.warning(f"Did not find a config file at {config_path}. Creating default.")
@@ -61,14 +64,14 @@ def get_config(config_path: str) -> dict:
     return config_dict
 
 
-def set_config_value(key, value, config_path):
-    with open(config_path, "r+") as config_file:
+def set_config_value(key:Any, value:Any, config_path:Path):
+    with config_path.open(mode="r+") as config_file:
         config_dict = yaml.safe_load(config_file)
         config_dict[key] = value
         yaml.safe_dump(config_dict, stream=config_file)
 
 
 cli_data_dir = get_cli_data_dir()
-cli_config_path = os.path.join(cli_data_dir, "config.yml")
+cli_config_path = Path(cli_data_dir, "config.yml")
 cli_config = get_config(cli_config_path)
-docset_dir = cli_config["docset_dir"]
+docset_dir = Path(cli_config["docset_dir"])
