@@ -43,8 +43,8 @@ def download_and_extract(url: str, extract_to: Path) -> None:
 def get_feeds(data_dir: Path = config.cli_data_dir) -> Path:
     """Downloads Dash's feeds repository to extract the mirror URLs from.
 
-    :param data_dir: a string path to the zeal_cli data directory. Default: filesystem.cli_data_dir
-    :return: a string path to the feeds directory.
+    :param data_dir: a pathlib.Path pointing to the zeal_cli data directory. Default: config.cli_data_dir
+    :return: a pathlib.Path pointing to the feeds directory.
     """
     url = "https://github.com/Kapeli/feeds/archive/refs/heads/master.zip"
     output_location = Path(data_dir, "feeds")  # Figure out where to put the feeds dir
