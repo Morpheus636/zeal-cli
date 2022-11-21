@@ -11,16 +11,16 @@ from . import config, downloads, exceptions
 
 LATEST_VERSION = "latest"
 
-def list_all(docset_dir: Path = config.docset_dir) -> list:
+def list_all(docset_dir: Path = config.docset_dir) -> list[str]:
     """List the docsets in the docset_dir.
 
-    :param docset_dir: String, path to the Zeal docset directory. DefaultL filesystem.docset_dir
-    :return: List of docsets (by name, not by path)
+    :param docset_dir: pathlib.Path, path to the Zeal docset directory. Default: config.docset_dir
+    :return: List of docset names, without .docset suffix
     """
     installed_docsets = []
-    for elem in docset_dir.glob("*.docset"):
-        if elem.is_dir():
-            installed_docsets.append(elem.stem)
+    for path in docset_dir.glob("*.docset"):
+        if path.is_dir():
+            installed_docsets.append(path.stem)
     return installed_docsets
 
 
@@ -28,9 +28,9 @@ def download(docset_name: str, feeds_dir: Path, docset_version: str = LATEST_VER
     """Download a docset by its feed name.
 
     :param docset_name: String, the feed name of the docset to download
-    :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
+    :param feeds_dir: pathlib.Path, the feeds directory - use get_feeds() to create it and get its location.
     :param docset_version: String, the docset version to download. Default: zeal.docset.LATEST_VERSION
-    :param docset_dir: String, the directory Zeal reads docsets from. Default: filesystem.docset_dir
+    :param docset_dir: pathlib.Path, the directory Zeal reads docsets from. Default: config.docset_dir
     :return: None
     """
     # Raise an exception if the docset is already installed
@@ -67,7 +67,7 @@ def remove(docset_name: str, docset_dir: Path = config.docset_dir):
     """
 
     :param docset_name: String, the name of the docset to remove
-    :param docset_dir: Optional: String, the path to the docset directory. Default: filesystem.docset_dir
+    :param docset_dir: Optional: Path, the path to the docset directory. Default: config.docset_dir
     :return:
     """
     if docset_name not in list_all(docset_dir=docset_dir):
@@ -80,11 +80,11 @@ def remove(docset_name: str, docset_dir: Path = config.docset_dir):
     else:
         shutil.rmtree(str(Path(docset_dir, f"{docset_name}.docset").resolve()))
 
-def get_docset_versions(docset_name: str, feeds_dir: Path):
+def get_docset_versions(docset_name: str, feeds_dir: Path) -> list[str]:
     """Returns a list of available versions of a particular docset.
 
     :param docset_name: String, the name of the docset to remove
-    :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
+    :param feeds_dir: pathlib.Path, the feeds directory - use get_feeds() to create it and get its location.
     :return: List of version as string
     """
     docset_xml_path = _get_docset_xml(docset_name, feeds_dir)
@@ -103,12 +103,12 @@ def _get_docset_xml(docset_name: str, feeds_dir: Path) -> Path:
     """Returns the correct docset xml file
 
     :param docset_name: String, the name of the docset to remove
-    :param feeds_dir: String, the feeds directory - use get_feeds() to create it and get its location.
+    :param feeds_dir: pathlib.Path, the feeds directory - use get_feeds() to create it and get its location.
     :return: the docset xml file path
     """
-    for elem in feeds_dir.glob("*.xml"):
-        if elem.stem == docset_name:
-            return elem
+    for path in feeds_dir.glob("*.xml"):
+        if path.stem == docset_name:
+            return path
     raise exceptions.DocsetNotExistsError(
             f"The docset '{docset_name}' cannot be found in the feeds to download."
     )

@@ -2,7 +2,9 @@ import logging
 import os
 import platform
 from typing import Any
-import winreg
+
+if platform.system() == "Windows":
+    import winreg
 
 import yaml
 from pathlib import Path
