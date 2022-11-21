@@ -104,7 +104,7 @@ def _get_docset_xml(docset_name: str, feeds_dir: Path) -> Path:
 
     :param docset_name: String, the name of the docset to remove
     :param feeds_dir: pathlib.Path, the feeds directory - use get_feeds() to create it and get its location.
-    :return: the docset xml file path
+    :return: pathlib.Path, the docset xml file path
     """
     for path in feeds_dir.glob("*.xml"):
         if path.stem == docset_name:
