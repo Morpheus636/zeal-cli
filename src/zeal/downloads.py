@@ -36,7 +36,26 @@ def download_and_extract(url: str, extract_to: str) -> None:
                 zip_ref.extractall(extract_to)
         elif url.endswith(".tgz"):
             with tarfile.open(file_name, "r:gz") as tar_ref:
-                tar_ref.extractall(extract_to)
+                def is_within_directory(directory, target):
+                    
+                    abs_directory = os.path.abspath(directory)
+                    abs_target = os.path.abspath(target)
+                
+                    prefix = os.path.commonprefix([abs_directory, abs_target])
+                    
+                    return prefix == abs_directory
+                
+                def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+                
+                    for member in tar.getmembers():
+                        member_path = os.path.join(path, member.name)
+                        if not is_within_directory(path, member_path):
+                            raise Exception("Attempted Path Traversal in Tar File")
+                
+                    tar.extractall(path, members, numeric_owner=numeric_owner) 
+                    
+                
+                safe_extract(tar_ref, extract_to)
 
 
 def get_feeds(data_dir: str = config.cli_data_dir) -> str:
