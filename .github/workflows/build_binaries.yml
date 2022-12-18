@@ -15,9 +15,6 @@ jobs:
       matrix:
         os: [[ubuntu-latest, windows-latest]]
 
-    outputs:
-      key: version
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -35,7 +32,6 @@ jobs:
         run: poetry install
 
       - name: Get version
-        id: get_version
         run: |
           poetry run python ./build_system/update_version.py
 
