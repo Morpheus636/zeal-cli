@@ -9,4 +9,4 @@ import src.zeal  # NOQA: E402
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows only test")
 def test_config_is_mocked_properly():
-    assert src.zeal.config.get_docset_dir() == Path("C:/Users/unittestuser/AppData/Local/Zeal/Zealdupa/docsets")
+    assert src.zeal.config.get_docset_dir() == Path("C:/Users/unittestuser/AppData/Local/Zeal/Zeal/docsets")
