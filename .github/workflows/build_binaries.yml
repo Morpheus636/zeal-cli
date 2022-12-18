@@ -46,6 +46,7 @@ jobs:
           name: zeal-cli
           path: dist/zeal-cli
           retention-days: 5
+        if: matrix.os == 'ubuntu-latest'
 
       - name: 'Upload Artifact - Windows'
         uses: actions/upload-artifact@v3
@@ -53,6 +54,7 @@ jobs:
           name: zeal-cli.exe
           path: dist/zeal-cli.exe
           retention-days: 5
+        if: matrix.os == 'windows-latest'
 
       # - name: Upload Executables
       #   uses: softprops/action-gh-release@v0.1.14
