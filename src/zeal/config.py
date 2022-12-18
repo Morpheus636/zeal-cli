@@ -18,7 +18,7 @@ def get_docset_dir() -> Path:
     if platform.system() == "Linux":
         return Path("~", ".local", "share", "Zeal", "Zeal", "docsets").expanduser()
     elif platform.system() == "Windows":
-        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Zeal\\Zeal\\docsets") as key:
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Zeal\\Zealdupa\\docsets") as key:
             path, _type = winreg.QueryValueEx(key, 'path')
             return Path(path).expanduser()
     else:
