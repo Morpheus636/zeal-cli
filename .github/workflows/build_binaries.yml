@@ -38,7 +38,7 @@ jobs:
       - name: Build Pyinstaller
         run: |
           poetry run python ./build_system/update_version.py
-          poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli-${{get_version.outputs.version}}
+          poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
