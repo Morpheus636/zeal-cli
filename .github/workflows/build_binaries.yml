@@ -2,10 +2,8 @@ name: Build Binaries
 
 on:
   push:
-    # tags:
-    #   - "v*"
-    branches: ["main"]
-  workflow_dispatch:
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -56,11 +54,18 @@ jobs:
           retention-days: 5
         if: matrix.os == 'windows-latest'
 
-      # - name: Upload Executables
-      #   uses: softprops/action-gh-release@v0.1.14
-      #   with:
-      #     files: |
-      #       dist/zeal-cli-${{get_version.outputs.version}}
-      #       dist/zeal-cli-${{get_version.outputs.version}}.exe
-      #       dist/zeal_cli-1.2.0.tar.gz
-      #       zeal_cli-1.2.0-py3-none-any.whl
+  release:
+    needs: build
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Upload Executables
+        uses: softprops/action-gh-release@v0.1.14
+        with:
+          files: |
+            dist/zeal-cli
+            dist/zeal-cli.exe
