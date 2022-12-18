@@ -2,16 +2,20 @@ name: Build Binaries
 
 on:
   push:
-    tags:
-      - "v*"
+    # tags:
+    #   - "v*"
+    branches: ["main"]
 
 jobs:
   build:
-    runs-on: ${{ matrix.os[0]}}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [[ubuntu-latest, linux]]
+        os: [[ubuntu-latest, windows-latest]]
+
+    outputs:
+      key: version
 
     steps:
       - name: Checkout Code
@@ -29,12 +33,35 @@ jobs:
       - name: Install Poetry Packages
         run: poetry install
 
-      - name: Build Pyinstaller
-        run: make build
+      - name: Get version
+        id: get_version
+        run: |
+          poetry run python ./build_system/update_version.py
 
-      - name: Upload Executables
-        uses: softprops/action-gh-release@v0.1.14
+      - name: Build Pyinstaller
+        run: |
+          poetry run python ./build_system/update_version.py
+          poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli-${{get_version.outputs.version}}
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
         with:
-          files: |
-            dist/zeal-cli
-            dist/zeal-cli.exe
+          name: zeal-cli
+          path: dist/zeal-cli
+          retention-days: 5
+
+      - name: 'Upload Artifact - Windows'
+        uses: actions/upload-artifact@v3
+        with:
+          name: zeal-cli.exe
+          path: dist/zeal-cli.exe
+          retention-days: 5
+
+      # - name: Upload Executables
+      #   uses: softprops/action-gh-release@v0.1.14
+      #   with:
+      #     files: |
+      #       dist/zeal-cli-${{get_version.outputs.version}}
+      #       dist/zeal-cli-${{get_version.outputs.version}}.exe
+      #       dist/zeal_cli-1.2.0.tar.gz
+      #       zeal_cli-1.2.0-py3-none-any.whl
