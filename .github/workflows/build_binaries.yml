@@ -69,5 +69,6 @@ jobs:
         uses: softprops/action-gh-release@v0.1.14
         with:
           files: |
-            /home/runner/artifacts/zeal-cli
-            /home/runner/artifacts/zeal-cli.exe
+            /home/runner/artifacts/**/zeal-cli
+            /home/runner/artifacts/**/zeal-cli.exe
+          fail_on_unmatched_files: true
