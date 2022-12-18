@@ -32,14 +32,14 @@ def get_cli_data_dir() -> Path:
             f"The Zeal CLI data directory location ({zeal_cli_dir}) exists and is a file, not a directory. Deleting."
         )
         os.remove(zeal_cli_dir)
-        zeal_cli_dir.mkdir()
+        zeal_cli_dir.mkdir(parents=True)
     elif zeal_cli_dir.is_dir():
         logger.debug(f"The Zeal CLI data directory location ({zeal_cli_dir}) already exists.")
     elif not zeal_cli_dir.exists():
         logger.debug(
             f"The Zeal CLI data directory location ({zeal_cli_dir}) does not exist. Creating."
         )
-        zeal_cli_dir.mkdir()
+        zeal_cli_dir.mkdir(parents=True)
     return zeal_cli_dir
 
 

@@ -62,10 +62,12 @@ jobs:
     steps:
       - name: download artifacts
         uses: actions/download-artifact@v3
+        with:
+          path: ~/artifacts
 
       - name: Upload Executables
         uses: softprops/action-gh-release@v0.1.14
         with:
           files: |
-            dist/zeal-cli
-            dist/zeal-cli.exe
+            ~/artifacts/zeal-cli
+            ~/artifacts/zeal-cli.exe
