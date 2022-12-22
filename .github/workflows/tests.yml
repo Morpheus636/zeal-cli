@@ -32,3 +32,8 @@ jobs:
 
       - name: Run PyTest
         run: poetry run pytest
+
+      - name: Test Build
+        run: |
+          poetry run python ./build_system/update_version.py
+          poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli
