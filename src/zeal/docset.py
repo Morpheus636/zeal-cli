@@ -2,21 +2,25 @@ import os
 import platform
 import shutil
 import subprocess
-import urllib
+from typing import Optional
+from urllib.parse import urlparse
 from pathlib import Path
 
 import bs4
 
-from . import config, downloads, exceptions
+from . import downloads, exceptions
+from .config import config
 
 LATEST_VERSION = "latest"
 
-def list_all(docset_dir: Path = config.docset_dir) -> list[str]:
+def list_all(docset_dir: Optional[Path] = None) -> list[str]:
     """List the docsets in the docset_dir.
 
     :param docset_dir: pathlib.Path, path to the Zeal docset directory. Default: config.docset_dir
     :return: List of docset names, without .docset suffix
     """
+    if docset_dir is None:
+        docset_dir = config.docset_dir
     installed_docsets = []
     for path in docset_dir.glob("*.docset"):
         if path.is_dir():
@@ -24,7 +28,7 @@ def list_all(docset_dir: Path = config.docset_dir) -> list[str]:
     return installed_docsets
 
 
-def download(docset_name: str, feeds_dir: Path, docset_version: str = LATEST_VERSION, docset_dir: Path = config.docset_dir) -> None:
+def download(docset_name: str, feeds_dir: Path, docset_version: str = LATEST_VERSION, docset_dir: Optional[Path] = None) -> None:
     """Download a docset by its feed name.
 
     :param docset_name: String, the feed name of the docset to download
@@ -33,6 +37,8 @@ def download(docset_name: str, feeds_dir: Path, docset_version: str = LATEST_VER
     :param docset_dir: pathlib.Path, the directory Zeal reads docsets from. Default: config.docset_dir
     :return: None
     """
+    if docset_dir is None:
+        docset_dir = config.docset_dir
     # Raise an exception if the docset is already installed
     if docset_name in list_all(docset_dir=docset_dir):
         raise exceptions.DocsetAlreadyInstalledError(
@@ -52,7 +58,7 @@ def download(docset_name: str, feeds_dir: Path, docset_version: str = LATEST_VER
         if docset_version != LATEST_VERSION:
             # Verify if version is available in feed
             if soup.find("other-versions") and soup.findAll(string=docset_version):
-                parsed_uri = urllib.parse.urlparse(url)
+                parsed_uri = urlparse(url)
                 file_name = os.path.basename(parsed_uri.path)
                 url = f"{parsed_uri.scheme}://{parsed_uri.netloc}/feeds/zzz/versions/{docset_name}/{docset_version}/{file_name}"
             else:
@@ -63,13 +69,15 @@ def download(docset_name: str, feeds_dir: Path, docset_version: str = LATEST_VER
     downloads.download_and_extract(url, docset_dir)
 
 
-def remove(docset_name: str, docset_dir: Path = config.docset_dir):
+def remove(docset_name: str, docset_dir: Optional[Path] = None) -> None:
     """
 
     :param docset_name: String, the name of the docset to remove
     :param docset_dir: Optional: Path, the path to the docset directory. Default: config.docset_dir
     :return:
     """
+    if docset_dir is None:
+        docset_dir = config.docset_dir
     if docset_name not in list_all(docset_dir=docset_dir):
         raise exceptions.DocsetNotInstalledError(
             f"The docset to remove '{docset_name}' cannot be removed because it is not installed on your system."
@@ -97,6 +105,7 @@ def get_docset_versions(docset_name: str, feeds_dir: Path) -> list[str]:
         if soup.find("other-versions"):
             soup_docset_versions = soup.findAll('version')
             return [docset_version.get_text() for docset_version in soup_docset_versions]
+    return []
 
 
 def _get_docset_xml(docset_name: str, feeds_dir: Path) -> Path:
