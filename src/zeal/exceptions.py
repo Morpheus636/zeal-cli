@@ -15,6 +15,7 @@ class DocsetNotInstalledError(ZealException):
 
     pass
 
+
 class DocsetNotExistsError(ZealException):
     """The docset name or version string passed to docset.install() does not exists."""
 

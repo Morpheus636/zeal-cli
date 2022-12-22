@@ -13,6 +13,7 @@ from .config import config
 
 LATEST_VERSION = "latest"
 
+
 def list_all(docset_dir: Optional[Path] = None) -> list[str]:
     """List the docsets in the docset_dir.
 
@@ -28,7 +29,12 @@ def list_all(docset_dir: Optional[Path] = None) -> list[str]:
     return installed_docsets
 
 
-def download(docset_name: str, feeds_dir: Path, docset_version: str = LATEST_VERSION, docset_dir: Optional[Path] = None) -> None:
+def download(
+    docset_name: str,
+    feeds_dir: Path,
+    docset_version: str = LATEST_VERSION,
+    docset_dir: Optional[Path] = None,
+) -> None:
     """Download a docset by its feed name.
 
     :param docset_name: String, the feed name of the docset to download
@@ -84,9 +90,14 @@ def remove(docset_name: str, docset_dir: Optional[Path] = None) -> None:
         )
     if platform.system() == "Windows":
         # windows performance of shutil.rmtree is pathetic
-        subprocess.run(["rmdir", "/q", "/s", str(Path(docset_dir, f"{docset_name}.docset").resolve())], check=True, shell=True)
+        subprocess.run(
+            ["rmdir", "/q", "/s", str(Path(docset_dir, f"{docset_name}.docset").resolve())],
+            check=True,
+            shell=True,
+        )
     else:
         shutil.rmtree(str(Path(docset_dir, f"{docset_name}.docset").resolve()))
+
 
 def get_docset_versions(docset_name: str, feeds_dir: Path) -> list[str]:
     """Returns a list of available versions of a particular docset.
@@ -103,7 +114,7 @@ def get_docset_versions(docset_name: str, feeds_dir: Path) -> list[str]:
         soup = bs4.BeautifulSoup(file_contents, "lxml")
         # Verify if version is available in feed
         if soup.find("other-versions"):
-            soup_docset_versions = soup.findAll('version')
+            soup_docset_versions = soup.findAll("version")
             return [docset_version.get_text() for docset_version in soup_docset_versions]
     return []
 
@@ -119,5 +130,5 @@ def _get_docset_xml(docset_name: str, feeds_dir: Path) -> Path:
         if path.stem == docset_name:
             return path
     raise exceptions.DocsetNotExistsError(
-            f"The docset '{docset_name}' cannot be found in the feeds to download."
+        f"The docset '{docset_name}' cannot be found in the feeds to download."
     )

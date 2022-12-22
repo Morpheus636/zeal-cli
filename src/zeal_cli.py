@@ -13,19 +13,19 @@ def main():
         "install", help="Install one or more docsets. See `zeal-cli install --help`"
     )
     install_command.add_argument(
-        "docsets", nargs="*", help=(
+        "docsets",
+        nargs="*",
+        help=(
             "A list of docset names, separated by a space. "
             "A specific version of a docset can be selected for installation by following "
             "the docset name with an equals (=) and the version of the docset to select"
-        )
+        ),
     )
 
     subparsers.add_parser("list", help="Prints a list of installed docsets")
 
     search_command = subparsers.add_parser("search", help="Prints a list of installed docsets")
-    search_command.add_argument(
-        "docset", nargs=1, help="A name of a docset."
-    )
+    search_command.add_argument("docset", nargs=1, help="A name of a docset.")
 
     remove_command = subparsers.add_parser(
         "remove", help="Delete one or more docsets. See `zeal-cli remove --help`"
@@ -77,8 +77,8 @@ def main():
                 docset_name = docset
                 docset_version = zeal.docset.LATEST_VERSION
                 # Parse version string if defined
-                if '=' in docset:
-                    docset_info = docset.split('=', 1)
+                if "=" in docset:
+                    docset_info = docset.split("=", 1)
                     docset_name = docset_info[0]
                     docset_version = docset_info[1]
                 print(f"Installing docset: {docset}")
@@ -91,7 +91,7 @@ def main():
             install_command.print_help()
 
     elif args.action == "list":
-            print(*zeal.docset.list_all(), sep="\n")
+        print(*zeal.docset.list_all(), sep="\n")
 
     elif args.action == "search":
         feeds = zeal.downloads.get_feeds()

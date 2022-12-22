@@ -9,6 +9,7 @@ sys.path.append(os.path.relpath(__file__) + "/../src")
 
 import src.zeal  # NOQA: E402
 
+
 @pytest.fixture(scope="class")
 def setup_temporary_dir():
     with tempfile.TemporaryDirectory() as data_dir:
@@ -18,10 +19,13 @@ def setup_temporary_dir():
         docset_dir = os.path.join(data_dir, "docsets")
         os.mkdir(docset_dir)
         feeds_path = src.zeal.downloads.get_feeds(feeds_dir)
-        yield(feeds_dir, docset_dir, feeds_path)
+        yield (feeds_dir, docset_dir, feeds_path)
 
-class TestBasic():
-    def test_list_all(self, ):
+
+class TestBasic:
+    def test_list_all(
+        self,
+    ):
         with tempfile.TemporaryDirectory() as docset_dir:
             os.mkdir(os.path.join(docset_dir, "docset1.docset"))
             os.mkdir(os.path.join(docset_dir, "docset2.docset"))
@@ -32,7 +36,6 @@ class TestBasic():
             assert "docset2" in docset_list
             assert "docset3" in docset_list
             assert "not_a_docset" not in docset_list
-
 
     def test_download_docset(self, setup_temporary_dir):
         _, docset_dir, feeds_path = setup_temporary_dir
@@ -69,13 +72,17 @@ class TestBasic():
         assert isinstance(docset_versions, list)
         assert all(isinstance(version, str) for version in docset_versions)
 
-class TestDoubleDownload():
 
+class TestDoubleDownload:
     def test_download_docset_by_version(self, setup_temporary_dir):
         _, docset_dir, feeds_path = setup_temporary_dir
 
         # Test that the docset is downloaded to the right place
-        src.zeal.docset.download("Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir))
+        src.zeal.docset.download(
+            "Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir)
+        )
         assert os.path.isdir(os.path.join(docset_dir, "Django.docset"))
         with pytest.raises(src.zeal.exceptions.DocsetAlreadyInstalledError):
-            src.zeal.docset.download("Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir))
+            src.zeal.docset.download(
+                "Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir)
+            )

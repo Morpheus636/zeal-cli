@@ -12,15 +12,15 @@ from pathlib import Path
 
 logger = logging.getLogger(__file__)
 
-class Config():
 
+class Config:
     def _get_docset_dir(self) -> Path:
         # Set zeal_docset_dir variable.
         if platform.system() == "Linux":
             return Path("~", ".local", "share", "Zeal", "Zeal", "docsets").expanduser()
         elif platform.system() == "Windows":
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Zeal\\Zeal\\docsets") as key:
-                path, _type = winreg.QueryValueEx(key, 'path')
+                path, _type = winreg.QueryValueEx(key, "path")
                 return Path(path).expanduser()
         else:
             raise RuntimeError("Systems other than Linux and Windows are not supported")
@@ -64,7 +64,7 @@ class Config():
             config_dict = self._set_default_config(config_path)
         return config_dict
 
-    def set_config_value(self, key:Any, value:Any, config_path:Path):
+    def set_config_value(self, key: Any, value: Any, config_path: Path):
         with config_path.open(mode="r+") as config_file:
             config_dict = yaml.safe_load(config_file)
             config_dict[key] = value
@@ -86,5 +86,6 @@ class Config():
     def docset_dir(self):
         if self.cli_config:
             return Path(self.cli_config["docset_dir"])
+
 
 config = Config()
