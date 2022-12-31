@@ -7,11 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os[0]}}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [[ubuntu-latest, linux]]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout Code
@@ -29,12 +29,46 @@ jobs:
       - name: Install Poetry Packages
         run: poetry install
 
+      - name: Get version
+        run: |
+          poetry run python ./build_system/update_version.py
+
       - name: Build Pyinstaller
-        run: make build
+        run: |
+          poetry run python ./build_system/update_version.py
+          poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: zeal-cli
+          path: dist/zeal-cli
+          retention-days: 5
+        if: matrix.os == 'ubuntu-latest'
+
+      - name: 'Upload Artifact - Windows'
+        uses: actions/upload-artifact@v3
+        with:
+          name: zeal-cli.exe
+          path: dist/zeal-cli.exe
+          retention-days: 5
+        if: matrix.os == 'windows-latest'
+
+  release:
+    needs: build
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: /home/runner/artifacts
 
       - name: Upload Executables
         uses: softprops/action-gh-release@v0.1.14
         with:
           files: |
-            dist/zeal-cli
-            dist/zeal-cli.exe
+            /home/runner/artifacts/**/zeal-cli
+            /home/runner/artifacts/**/zeal-cli.exe
+          fail_on_unmatched_files: true

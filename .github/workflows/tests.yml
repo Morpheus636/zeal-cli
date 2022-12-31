@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout Code
@@ -33,5 +33,7 @@ jobs:
       - name: Run PyTest
         run: poetry run pytest
 
-      - name: Build Test
-        run: make build
+      - name: Test Build
+        run: |
+          poetry run python ./build_system/update_version.py
+          poetry run pyinstaller --onefile ./src/zeal_cli.py --name zeal-cli

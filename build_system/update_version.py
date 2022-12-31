@@ -2,7 +2,6 @@ import os
 
 import git
 
-
 repo = git.Repo(search_parent_directories=True)
 version = repo.git.describe("--tags")
 
