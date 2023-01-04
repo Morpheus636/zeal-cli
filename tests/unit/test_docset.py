@@ -55,7 +55,7 @@ class TestBasic:
         # Test that a file with the same name still raises the exception
         with open(os.path.join(docset_dir, "TotallyRealDocset.docset"), "a"):
             pass
-        with pytest.raises(src.zeal.exceptions.DocsetNotInstalledError):
+        with pytest.raises(src.zeal_cli.zeal.exceptions.DocsetNotInstalledError):
             src.zeal_cli.zeal.docset.remove("TotallyRealDocset", docset_dir=Path(docset_dir))
         os.remove(os.path.join(docset_dir, "TotallyRealDocset.docset"))
 
