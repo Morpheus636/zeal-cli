@@ -5,7 +5,7 @@ import pytest
 import platform
 
 sys.path.append(os.path.relpath(__file__) + "/../src")
-import src.zeal  # NOQA: E402
+import src.zeal_cli.zeal  # NOQA: E402
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows only test")

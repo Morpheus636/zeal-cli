@@ -4,7 +4,7 @@ import tempfile
 
 
 sys.path.append(os.path.relpath(__file__) + "/../src")
-import src.zeal  # NOQA: E402
+import src.zeal_cli.zeal  # NOQA: E402
 
 
 def test_get_feeds():

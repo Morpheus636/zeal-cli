@@ -2,6 +2,8 @@
 name = "zeal_cli"
 version = "v1.2.0"
 description = ""
+readme = "docs/README.md"
+repository = "https://github.com/morpheus636/zeal-cli"
 authors = ["Josh Levin <morpheus636@morpheus636.com>"]
 
 [tool.poetry.dependencies]
