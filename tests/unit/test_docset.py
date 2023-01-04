@@ -82,7 +82,7 @@ class TestDoubleDownload:
             "Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir)
         )
         assert os.path.isdir(os.path.join(docset_dir, "Django.docset"))
-        with pytest.raises(src.zeal_cli.exceptions.DocsetAlreadyInstalledError):
+        with pytest.raises(src.zeal_cli.zeal.exceptions.DocsetAlreadyInstalledError):
             src.zeal_cli.zeal.docset.download(
                 "Django", feeds_path, docset_version="2.2.7", docset_dir=Path(docset_dir)
             )
