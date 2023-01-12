@@ -44,9 +44,6 @@ ensure_newline_before_comments = "True"
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 lines_after_imports = 2
 
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
