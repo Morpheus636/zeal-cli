@@ -5,7 +5,7 @@ on:
     tags:
       - "v*"
 jobs:
-  tests:
+  pypi-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
