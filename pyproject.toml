@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zeal_cli"
-version = "v1.2.0"
+version = "v2.0.0-dev2"
 description = ""
 license = "GPL-3.0-or-later"
 readme = "docs/README.md"
