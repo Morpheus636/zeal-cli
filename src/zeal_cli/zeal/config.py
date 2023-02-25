@@ -19,9 +19,12 @@ class Config:
         if platform.system() == "Linux":
             return Path("~", ".local", "share", "Zeal", "Zeal", "docsets").expanduser()
         elif platform.system() == "Windows":
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Zeal\\Zeal\\docsets") as key:
-                path, _type = winreg.QueryValueEx(key, "path")
-                return Path(path).expanduser()
+            try:
+                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Zeal\\Zeal\\docsets") as key:
+                    path, _type = winreg.QueryValueEx(key, "path")
+                    return Path(path).expanduser()
+            except FileNotFoundError:
+                return Path("~/", "AppData", "Local", "Zeal", "Zeal", "docsets").expanduser()
         else:
             raise RuntimeError("Systems other than Linux and Windows are not supported")
 
