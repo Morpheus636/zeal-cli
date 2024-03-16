@@ -59,14 +59,19 @@ def download(
         file_contents = file.read()
         soup = bs4.BeautifulSoup(file_contents, "lxml")
         urls = soup.find_all("url")
+        latest_feed_version = soup.find("version").getText()
         url = urls[0].getText()
         # Adjust URL if version is specified
-        if docset_version != LATEST_VERSION:
+        if docset_version != LATEST_VERSION and docset_version != latest_feed_version:
             # Verify if version is available in feed
             if soup.find("other-versions") and soup.findAll(string=docset_version):
                 parsed_uri = urlparse(url)
                 file_name = os.path.basename(parsed_uri.path)
-                url = f"{parsed_uri.scheme}://{parsed_uri.netloc}/feeds/zzz/versions/{docset_name}/{docset_version}/{file_name}"
+                if "/user_contributed/" not in url:
+                    url = f"{parsed_uri.scheme}://{parsed_uri.netloc}/feeds/zzz/versions/{docset_name}/{docset_version}/{file_name}"
+                else:
+                    dirname = os.path.dirname(parsed_uri.path)
+                    url = f"{parsed_uri.scheme}://{parsed_uri.netloc}{dirname}/versions/{docset_version}/{file_name}"
             else:
                 raise exceptions.DocsetNotExistsError(
                     f"Version {docset_version} does not exist for {docset_name}"
@@ -126,9 +131,10 @@ def _get_docset_xml(docset_name: str, feeds_dir: Path) -> Path:
     :param feeds_dir: pathlib.Path, the feeds directory - use get_feeds() to create it and get its location.
     :return: pathlib.Path, the docset xml file path
     """
-    for path in feeds_dir.glob("*.xml"):
+    for path in feeds_dir.rglob("*.xml"):
         if path.stem == docset_name:
             return path
+
     raise exceptions.DocsetNotExistsError(
         f"The docset '{docset_name}' cannot be found in the feeds to download."
     )
